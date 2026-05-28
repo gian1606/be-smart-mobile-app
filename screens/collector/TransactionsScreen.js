@@ -33,7 +33,7 @@ export default function CollectorTransactionsScreen() {
 
   const totalCollected = filtered.filter((t) => t.status === 'collected').length;
   const totalReported  = filtered.filter((t) => t.status === 'reported').length;
-  const totalWeight    = filtered.reduce((sum, t) => sum + (t.weightKg || 0), 0);
+  const totalVolume    = filtered.reduce((sum, t) => sum + (t.volumeL || 0), 0);
 
   return (
     <View style={styles.screen}>
@@ -66,7 +66,7 @@ export default function CollectorTransactionsScreen() {
           <View style={styles.summaryDivider} />
           <SummaryItem icon="document-text-outline"   value={totalReported}  label="Reported"  color={C.primary} />
           <View style={styles.summaryDivider} />
-          <SummaryItem icon="scale-outline"           value={`${totalWeight.toFixed(1)} kg`} label="Total Weight" color={C.primary} />
+          <SummaryItem icon="scale-outline" value={`${totalVolume.toFixed(1)} L`} label="Total Volume" color={C.primary} />
         </View>
       </View>
 
@@ -121,8 +121,8 @@ function CollectionRow({ item }) {
         <View style={[rowStyles.badge, { backgroundColor: statusColor + '22', borderColor: statusColor }]}>
           <Text style={[rowStyles.badgeText, { color: statusColor }]}>{statusLabel}</Text>
         </View>
-        {item.weightKg && (
-          <Text style={rowStyles.weight}>{item.weightKg} kg</Text>
+        {item.volumeL && (
+          <Text style={rowStyles.weight}>{item.volumeL} L</Text>
         )}
       </View>
     </View>

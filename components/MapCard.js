@@ -1,28 +1,19 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 
-export default function MapCard({ mapData }) {
+export default function MapCard({ mapData, mrfLocations = [] }) {
   return (
     <View style={styles.card}>
-      {/* Map background grid */}
       <View style={styles.mapBackground}>
 
-        {/* Grid lines — horizontal */}
+        {/* Grid lines */}
         {[0.2, 0.4, 0.6, 0.8].map((pos) => (
-          <View
-            key={`h-${pos}`}
-            style={[styles.gridLineH, { top: `${pos * 100}%` }]}
-          />
+          <View key={`h-${pos}`} style={[styles.gridLineH, { top: `${pos * 100}%` }]} />
         ))}
-
-        {/* Grid lines — vertical */}
         {[0.2, 0.4, 0.6, 0.8].map((pos) => (
-          <View
-            key={`v-${pos}`}
-            style={[styles.gridLineV, { left: `${pos * 100}%` }]}
-          />
+          <View key={`v-${pos}`} style={[styles.gridLineV, { left: `${pos * 100}%` }]} />
         ))}
 
         {/* Truck markers */}
@@ -31,11 +22,11 @@ export default function MapCard({ mapData }) {
             key={truck.id}
             style={[styles.markerWrapper, { left: `${truck.posX * 100}%`, top: `${truck.posY * 100}%` }]}
           >
-            <View style={styles.truckMarker}>
-              <Ionicons name="car" size={14} color={colors.secondary} />
+            <View style={[styles.iconCircle, { backgroundColor: '#F57C00' }]}>
+              <Ionicons name="bus" size={14} color="#fff" />
             </View>
-            <View style={styles.markerLabel}>
-              <Text style={styles.markerLabelText}>{truck.label}</Text>
+            <View style={styles.label}>
+              <Text style={styles.labelText} numberOfLines={1}>{truck.label}</Text>
             </View>
           </View>
         ))}
@@ -46,19 +37,55 @@ export default function MapCard({ mapData }) {
             key={bin.id}
             style={[styles.markerWrapper, { left: `${bin.posX * 100}%`, top: `${bin.posY * 100}%` }]}
           >
-            <View style={[styles.binMarker, { backgroundColor: bin.status === 'full' ? colors.error : colors.primary }]}>
-              <Ionicons name="trash" size={12} color={colors.secondary} />
+            <View style={[styles.iconCircle, { backgroundColor: bin.status === 'full' ? colors.error : colors.primary }]}>
+              <Ionicons name="trash" size={13} color="#fff" />
             </View>
-            <View style={[styles.binBadge, { backgroundColor: bin.status === 'full' ? colors.error : colors.primary }]}>
-              <Text style={styles.binBadgeText}>{bin.status === 'full' ? 'FULL' : 'OK'}</Text>
+            <View style={styles.label}>
+              <Text style={styles.labelText} numberOfLines={1}>{bin.label}</Text>
             </View>
           </View>
         ))}
 
-        {/* Live badge */}
-        <View style={styles.liveBadge}>
-          <View style={styles.liveDot} />
-          <Text style={styles.liveText}>LIVE</Text>
+        {/* MRF markers */}
+        {mrfLocations.map((mrf) => (
+          <View
+            key={mrf.id}
+            style={[styles.markerWrapper, { left: `${mrf.posX * 100}%`, top: `${mrf.posY * 100}%` }]}
+          >
+            <View style={[styles.iconCircle, { backgroundColor: mrf.status === 'full' ? colors.error : colors.primary }]}>
+              <Ionicons name="business" size={13} color="#fff" />
+            </View>
+            <View style={styles.label}>
+              <Text style={styles.labelText} numberOfLines={1}>{mrf.name}</Text>
+            </View>
+          </View>
+        ))}
+
+        {/* Legend — top right */}
+        <View style={styles.legend}>
+          <View style={styles.legendRow}>
+            <View style={[styles.legendDot, { backgroundColor: colors.primary }]} />
+            <Text style={styles.legendText}>Available</Text>
+          </View>
+          <View style={styles.legendRow}>
+            <View style={[styles.legendDot, { backgroundColor: colors.error }]} />
+            <Text style={styles.legendText}>Full</Text>
+          </View>
+        </View>
+
+        {/* Satellite — bottom left */}
+        <TouchableOpacity style={styles.satelliteBtn} activeOpacity={0.8}>
+          <Text style={styles.satelliteText}>Satellite</Text>
+        </TouchableOpacity>
+
+        {/* Zoom — bottom right */}
+        <View style={styles.zoomControls}>
+          <TouchableOpacity style={styles.zoomBtn} activeOpacity={0.8}>
+            <Text style={styles.zoomText}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.zoomBtn} activeOpacity={0.8}>
+            <Text style={styles.zoomText}>−</Text>
+          </TouchableOpacity>
         </View>
 
       </View>
@@ -86,104 +113,89 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   mapBackground: {
-    height: 320,
+    height: 300,
     backgroundColor: '#E8F5E9',
     position: 'relative',
     overflow: 'hidden',
   },
-  gridLineH: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    height: 1,
-    backgroundColor: '#C8E6C9',
-  },
-  gridLineV: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: 1,
-    backgroundColor: '#C8E6C9',
-  },
+  gridLineH: { position: 'absolute', left: 0, right: 0, height: 1, backgroundColor: '#C8E6C9' },
+  gridLineV: { position: 'absolute', top: 0, bottom: 0, width: 1, backgroundColor: '#C8E6C9' },
+
+  // Marker: centered on posX/posY, offset so icon centre sits on the coordinate
   markerWrapper: {
     position: 'absolute',
     alignItems: 'center',
+    width: 80,
+    marginLeft: -40, // centre the 80px wrapper on posX
   },
-  truckMarker: {
-    backgroundColor: colors.primary,
+  iconCircle: {
+    width: 30,
+    height: 30,
     borderRadius: 9999,
-    padding: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 4,
+    elevation: 5,
   },
-  markerLabel: {
+  label: {
     marginTop: 4,
-    backgroundColor: colors.secondary,
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
-  },
-  markerLabelText: {
-    fontSize: 9,
-    color: colors.textPrimary,
-    fontWeight: '600',
-  },
-  binMarker: {
-    borderRadius: 9999,
-    padding: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  binBadge: {
-    marginTop: 3,
+    backgroundColor: 'rgba(255,255,255,0.92)',
     borderRadius: 4,
     paddingHorizontal: 5,
-    paddingVertical: 1,
+    paddingVertical: 2,
+    maxWidth: 80,
   },
-  binBadgeText: {
+  labelText: {
     fontSize: 8,
-    color: colors.secondary,
-    fontWeight: '700',
+    color: colors.textPrimary,
+    fontWeight: '600',
+    textAlign: 'center',
   },
-  liveBadge: {
+
+  // Legend — top right
+  legend: {
     position: 'absolute',
     top: 10,
     right: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.secondary,
-    borderRadius: 9999,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    borderRadius: 8,
+    padding: 8,
     gap: 5,
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
   },
-  liveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 9999,
-    backgroundColor: colors.error,
+  legendRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  legendDot: { width: 10, height: 10, borderRadius: 9999 },
+  legendText: { fontSize: 10, color: colors.textPrimary, fontWeight: '500' },
+
+  // Satellite — bottom left
+  satelliteBtn: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
-  liveText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: colors.error,
-    letterSpacing: 0.5,
+  satelliteText: { fontSize: 12, color: colors.textPrimary, fontWeight: '600' },
+
+  // Zoom — bottom right
+  zoomControls: { position: 'absolute', bottom: 10, right: 10, gap: 4 },
+  zoomBtn: {
+    width: 32,
+    height: 32,
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  zoomText: { fontSize: 18, color: colors.textPrimary, fontWeight: '600', lineHeight: 22 },
+
+  // Footer
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -191,8 +203,5 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.secondary,
   },
-  footerText: {
-    fontSize: typography.size.xs,
-    color: colors.textSecondary,
-  },
+  footerText: { fontSize: typography.size.xs, color: colors.textSecondary },
 });

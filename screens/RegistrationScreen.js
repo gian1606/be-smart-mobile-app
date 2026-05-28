@@ -1,19 +1,107 @@
 import { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, ScrollView, KeyboardAvoidingView, Platform,
+  StyleSheet, ScrollView, KeyboardAvoidingView,
+  Platform, Modal, FlatList,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 import { batangasBarangays } from '../mock/data';
 
+const ROLES = [
+  {
+    key: 'resident',
+    label: 'Resident',
+    description: 'Report bins & earn ECO',
+    icon: 'person-outline',
+  },
+  {
+    key: 'buyer',
+    label: 'MRF Buyer',
+    description: 'Reserve & purchase recyclables',
+    icon: 'business-outline',
+  },
+];
+
+function BarangayPicker({ value, onChange }) {
+  const [visible, setVisible] = useState(false);
+
+  function select(b) {
+    onChange(b);
+    setVisible(false);
+  }
+
+  return (
+    <>
+      {/* Trigger */}
+      <TouchableOpacity
+        style={styles.pickerTrigger}
+        onPress={() => setVisible(true)}
+        activeOpacity={0.7}
+      >
+        <Ionicons name="location-outline" size={18} color={colors.textMuted} />
+        <Text style={[styles.pickerTriggerText, !value && { color: colors.textMuted }]}>
+          {value || 'Select Barangay'}
+        </Text>
+        <Ionicons name="chevron-down" size={16} color={colors.textMuted} />
+      </TouchableOpacity>
+
+      {/* Modal sheet */}
+      <Modal visible={visible} transparent animationType="slide">
+        <View style={styles.sheetOverlay}>
+          <TouchableOpacity style={styles.sheetBackdrop} onPress={() => setVisible(false)} />
+          <View style={styles.sheet}>
+
+            {/* Header */}
+            <View style={styles.sheetHeader}>
+              <Text style={styles.sheetTitle}>Select Barangay</Text>
+              <TouchableOpacity onPress={() => setVisible(false)}>
+                <Ionicons name="close" size={22} color={colors.textSecondary} />
+              </TouchableOpacity>
+            </View>
+
+            {/* List */}
+            <FlatList
+              data={batangasBarangays}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => {
+                const isSelected = item === value;
+                return (
+                  <TouchableOpacity
+                    style={[styles.optionRow, isSelected && styles.optionRowSelected]}
+                    onPress={() => select(item)}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons
+                      name={isSelected ? 'location' : 'location-outline'}
+                      size={16}
+                      color={isSelected ? colors.primary : colors.textSecondary}
+                    />
+                    <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
+                      {item}
+                    </Text>
+                    {isSelected && (
+                      <Ionicons name="checkmark" size={16} color={colors.primary} />
+                    )}
+                  </TouchableOpacity>
+                );
+              }}
+              contentContainerStyle={{ paddingBottom: 20 }}
+            />
+          </View>
+        </View>
+      </Modal>
+    </>
+  );
+}
+
 export default function RegistrationScreen({ navigation, setIsAuthenticated }) {
+  const [role, setRole]               = useState('');
   const [name, setName]               = useState('');
   const [email, setEmail]             = useState('');
   const [phone, setPhone]             = useState('');
-  const [barangay, setBarangay]       = useState(batangasBarangays[0]);
+  const [barangay, setBarangay]       = useState('');
   const [password, setPassword]       = useState('');
   const [confirm, setConfirm]         = useState('');
   const [showPass, setShowPass]       = useState(false);
@@ -21,16 +109,20 @@ export default function RegistrationScreen({ navigation, setIsAuthenticated }) {
   const [error, setError]             = useState('');
 
   function handleRegister() {
+    if (!role) {
+      setError('Please select an account type.');
+      return;
+    }
+    if (!name || !email || !phone || !barangay || !password) {
+      setError('Please fill in all fields.');
+      return;
+    }
     if (password !== confirm) {
       setError('Passwords do not match.');
       return;
     }
-    if (!name || !email || !phone || !password) {
-      setError('Please fill in all fields.');
-      return;
-    }
     setError('');
-    navigation.navigate('OTP');
+    navigation.navigate('OTP', { role });
   }
 
   return (
@@ -46,15 +138,38 @@ export default function RegistrationScreen({ navigation, setIsAuthenticated }) {
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Join the BE-SMART community</Text>
 
-          {/* Avatar placeholder */}
-          <View style={styles.avatarWrapper}>
-            <View style={styles.avatar}>
-              <Ionicons name="camera-outline" size={28} color={colors.primary} />
-            </View>
-            <Text style={styles.avatarLabel}>Upload Photo</Text>
-          </View>
-
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+          {/* Account type */}
+          <Text style={styles.fieldLabel}>Account Type</Text>
+          <View style={styles.roleRow}>
+            {ROLES.map((r) => {
+              const isSelected = role === r.key;
+              return (
+                <TouchableOpacity
+                  key={r.key}
+                  style={[styles.roleCard, isSelected && styles.roleCardSelected]}
+                  onPress={() => setRole(r.key)}
+                  activeOpacity={0.7}
+                >
+                  <View style={[styles.roleIconWrap, isSelected && styles.roleIconWrapSelected]}>
+                    <Ionicons name={r.icon} size={22} color={isSelected ? '#fff' : colors.textSecondary} />
+                  </View>
+                  <Text style={[styles.roleLabel, isSelected && styles.roleLabelSelected]}>
+                    {r.label}
+                  </Text>
+                  <Text style={[styles.roleDesc, isSelected && styles.roleDescSelected]}>
+                    {r.description}
+                  </Text>
+                  {isSelected && (
+                    <View style={styles.roleCheck}>
+                      <Ionicons name="checkmark-circle" size={18} color={colors.primary} />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
 
           <TextInput
             style={styles.input}
@@ -82,17 +197,7 @@ export default function RegistrationScreen({ navigation, setIsAuthenticated }) {
           />
 
           {/* Barangay picker */}
-          <View style={styles.pickerWrapper}>
-            <Picker
-              selectedValue={barangay}
-              onValueChange={(val) => setBarangay(val)}
-              style={{ color: colors.textPrimary }}
-            >
-              {batangasBarangays.map((b) => (
-                <Picker.Item key={b} label={b} value={b} />
-              ))}
-            </Picker>
-          </View>
+          <BarangayPicker value={barangay} onChange={setBarangay} />
 
           {/* Password */}
           <View style={styles.passwordWrapper}>
@@ -178,25 +283,6 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: -8,
   },
-  avatarWrapper: {
-    alignItems: 'center',
-    gap: 8,
-    marginVertical: 4,
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 9999,
-    backgroundColor: colors.successLight,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: colors.accent,
-  },
-  avatarLabel: {
-    fontSize: typography.size.xs,
-    color: colors.textSecondary,
-  },
   errorText: {
     fontSize: typography.size.sm,
     color: colors.error,
@@ -213,13 +299,144 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     backgroundColor: colors.background,
   },
-  pickerWrapper: {
+
+  // ── Role selector ──
+  fieldLabel: {
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.semibold,
+    color: colors.textSecondary,
+    marginBottom: -6,
+  },
+  roleRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  roleCard: {
+    flex: 1,
+    borderWidth: 1.5,
+    borderColor: colors.cardBorder,
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: colors.background,
+    position: 'relative',
+  },
+  roleCardSelected: {
+    borderColor: colors.primary,
+    backgroundColor: colors.successLight,
+  },
+  roleIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: colors.cardBorder,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  roleIconWrapSelected: {
+    backgroundColor: colors.primary,
+  },
+  roleLabel: {
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.bold,
+    color: colors.textPrimary,
+  },
+  roleLabelSelected: {
+    color: colors.primary,
+  },
+  roleDesc: {
+    fontSize: typography.size.xs,
+    color: colors.textMuted,
+    textAlign: 'center',
+  },
+  roleDescSelected: {
+    color: colors.textSecondary,
+  },
+  roleCheck: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+  },
+
+  // ── Barangay picker trigger ──
+  pickerTrigger: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
     borderWidth: 1,
     borderColor: colors.cardBorder,
     borderRadius: 8,
+    padding: 12,
     backgroundColor: colors.background,
-    overflow: 'hidden',
   },
+  pickerTriggerText: {
+    flex: 1,
+    fontSize: typography.size.base,
+    color: colors.textPrimary,
+  },
+
+  // ── Bottom sheet ──
+  sheetOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  sheet: {
+    backgroundColor: colors.secondary,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    maxHeight: '70%',
+  },
+  sheetHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  sheetTitle: {
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.bold,
+    color: colors.textPrimary,
+  },
+  searchWrapper: {},
+  searchInput: {},
+  emptyState: {},
+  emptyText: {},
+  optionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 13,
+    paddingHorizontal: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.cardBorder,
+  },
+  optionRowSelected: {
+    backgroundColor: colors.successLight,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    borderBottomWidth: 0,
+    marginBottom: 1,
+  },
+  optionText: {
+    flex: 1,
+    fontSize: typography.size.base,
+    color: colors.textPrimary,
+  },
+  optionTextSelected: {
+    color: colors.primary,
+    fontWeight: typography.weight.semibold,
+  },
+  emptyState: {},
+  emptyText: {},
+
+  // ── Password fields ──
   passwordWrapper: {
     flexDirection: 'row',
     alignItems: 'center',

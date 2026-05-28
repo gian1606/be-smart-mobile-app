@@ -10,7 +10,7 @@ export default function TransactionRow({ transaction }) {
     <View style={styles.row}>
       <View style={[styles.iconCircle, { backgroundColor: isEarned ? colors.successLight : '#FFF3E0' }]}>
         <Ionicons
-          name={isEarned ? 'leaf' : 'gift'}
+          name={isEarned ? 'diamond' : 'gift'}
           size={18}
           color={isEarned ? colors.primary : colors.warning}
         />
@@ -21,7 +21,7 @@ export default function TransactionRow({ transaction }) {
         <Text style={styles.meta}>{transaction.description}</Text>
       </View>
       <Text style={[styles.amount, { color: isEarned ? colors.primary : colors.error }]}>
-        {isEarned ? '+' : '−'}{transaction.amount} tokens
+        {isEarned ? '+' : '−'}{transaction.amount} ECO
       </Text>
     </View>
   );

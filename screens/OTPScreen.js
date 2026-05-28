@@ -7,7 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 
-export default function OTPScreen({ navigation, setIsAuthenticated }) {
+export default function OTPScreen({ navigation, route, setIsAuthenticated }) {
+  const role = route?.params?.role || 'resident';
   const [otp, setOtp] = useState(['', '', '', '']);
   const [error, setError] = useState('');
   const [resent, setResent] = useState(false);
@@ -38,7 +39,7 @@ export default function OTPScreen({ navigation, setIsAuthenticated }) {
     }
     // Mock OTP — any 4 digits works
     setError('');
-    setIsAuthenticated(true, 'resident');
+    setIsAuthenticated(true, role);
   }
 
   function handleResend() {

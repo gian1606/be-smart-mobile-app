@@ -36,7 +36,7 @@ export default function RewardsScreen() {
 
   function confirmRedeem() {
     if (selectedReward.tokenCost > mockUser.ecoTokenBalance) {
-      setErrorMsg('Insufficient tokens for this reward.');
+      setErrorMsg('Insufficient ECO for this reward.');
     } else {
       setRedeemed(true);
       setErrorMsg('');
@@ -77,8 +77,8 @@ export default function RewardsScreen() {
           <View style={styles.featuredBody}>
             <Text style={styles.featuredName}>{featured.name}</Text>
             <View style={styles.featuredCostRow}>
-              <Ionicons name="leaf" size={13} color={colors.primary} />
-              <Text style={styles.featuredCost}>{featured.tokenCost.toLocaleString()} tokens</Text>
+              <Ionicons name="diamond" size={13} color={colors.primary} />
+              <Text style={styles.featuredCost}>{featured.tokenCost.toLocaleString()} ECO</Text>
             </View>
             <TouchableOpacity
               style={styles.featuredBtn}
@@ -107,7 +107,7 @@ export default function RewardsScreen() {
             {errorMsg ? (
               <>
                 <Ionicons name="close-circle" size={48} color={colors.error} />
-                <Text style={styles.modalTitle}>Insufficient Tokens</Text>
+                <Text style={styles.modalTitle}>Insufficient ECO</Text>
                 <Text style={styles.modalSubtitle}>{errorMsg}</Text>
                 <TouchableOpacity
                   style={styles.modalBtn}
@@ -139,7 +139,7 @@ export default function RewardsScreen() {
               <>
                 <Text style={styles.modalTitle}>Redeem Reward?</Text>
                 <Text style={styles.modalSubtitle}>{selectedReward?.name}</Text>
-                <Text style={styles.modalCost}>{selectedReward?.tokenCost.toLocaleString()} tokens</Text>
+                <Text style={styles.modalCost}>{selectedReward?.tokenCost.toLocaleString()} ECO</Text>
                 <View style={styles.modalActions}>
                   <TouchableOpacity
                     style={styles.modalCancelBtn}
