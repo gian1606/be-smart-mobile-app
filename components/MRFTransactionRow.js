@@ -7,7 +7,7 @@ export default function MRFTransactionRow({ transaction }) {
   return (
     <View style={styles.row}>
       <View style={styles.iconCircle}>
-        <Ionicons name="leaf" size={18} color={colors.primary} />
+        <Ionicons name="diamond" size={18} color={colors.primary} />
       </View>
       <View style={styles.info}>
         <Text style={styles.residentName}>{transaction.residentName}</Text>
@@ -15,8 +15,8 @@ export default function MRFTransactionRow({ transaction }) {
         <Text style={styles.meta}>{transaction.dateTime}</Text>
       </View>
       <View style={styles.tokenBadge}>
-        <Ionicons name="leaf" size={11} color={colors.primary} />
-        <Text style={styles.tokenText}>+{transaction.tokensAwarded}</Text>
+        <Ionicons name="diamond" size={11} color={colors.primary} />
+        <Text style={styles.tokenText}>+{transaction.tokensAwarded} ECO</Text>
       </View>
     </View>
   );

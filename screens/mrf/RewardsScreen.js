@@ -28,14 +28,6 @@ export default function RewardsScreen() {
 
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
 
-      {/* Info banner */}
-      <View style={styles.infoBanner}>
-        <Ionicons name="information-circle-outline" size={18} color="#6A1B9A" />
-        <Text style={styles.infoText}>
-          Rewards are given in person at the MRF. Scan the resident's QR code to issue tokens.
-        </Text>
-      </View>
-
       {/* Category filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {CATEGORIES.map((cat) => (
@@ -58,11 +50,18 @@ export default function RewardsScreen() {
           <View style={styles.featuredBody}>
             <Text style={styles.featuredName}>{featured.name}</Text>
             <View style={styles.featuredCostRow}>
-              <Ionicons name="leaf" size={13} color={colors.primary} />
-              <Text style={styles.featuredCost}>{featured.tokenCost.toLocaleString()} tokens</Text>
+              <Ionicons name="diamond" size={13} color={colors.primary} />
+              <Text style={styles.featuredCost}>{featured.tokenCost.toLocaleString()} ECO</Text>
             </View>
-            <View style={styles.featuredTag}>
-              <Text style={styles.featuredTagText}>Given in person at MRF</Text>
+            <View style={[styles.featuredStockRow, featured.stock === 0 && styles.featuredStockRowEmpty]}>
+              <Ionicons
+                name={featured.stock === 0 ? 'close-circle-outline' : 'cube-outline'}
+                size={14}
+                color={featured.stock === 0 ? colors.error : colors.primary}
+              />
+              <Text style={[styles.featuredStockText, featured.stock === 0 && styles.featuredStockTextEmpty]}>
+                {featured.stock === 0 ? 'Out of stock' : `${featured.stock} in stock`}
+              </Text>
             </View>
           </View>
         </View>
@@ -95,8 +94,6 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: typography.size.sm, color: 'rgba(255,255,255,0.75)' },
   scroll: { flex: 1 },
   content: { padding: 20, gap: 18, paddingBottom: 40 },
-  infoBanner: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, backgroundColor: '#EDE7F6', borderRadius: 10, padding: 12, borderWidth: 1, borderColor: '#CE93D8' },
-  infoText: { flex: 1, fontSize: typography.size.xs, color: '#4A148C', lineHeight: 18 },
   featuredCard: { backgroundColor: colors.secondary, borderRadius: 14, overflow: 'hidden', borderWidth: 1, borderColor: colors.cardBorder, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 10, elevation: 3 },
   featuredImage: { height: 100, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center', gap: 6 },
   featuredLabel: { color: colors.secondary, fontSize: typography.size.sm, fontWeight: typography.weight.semibold, letterSpacing: 1 },
@@ -104,8 +101,10 @@ const styles = StyleSheet.create({
   featuredName: { fontSize: typography.size.md, fontWeight: typography.weight.bold, color: colors.textPrimary },
   featuredCostRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   featuredCost: { fontSize: typography.size.sm, color: colors.primary, fontWeight: typography.weight.medium },
-  featuredTag: { backgroundColor: '#EDE7F6', borderRadius: 8, paddingVertical: 8, alignItems: 'center', marginTop: 4 },
-  featuredTagText: { color: '#6A1B9A', fontWeight: typography.weight.bold, fontSize: typography.size.sm },
+  featuredStockRow: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.successLight, borderRadius: 8, paddingVertical: 7, paddingHorizontal: 10, alignSelf: 'flex-start', marginTop: 2 },
+  featuredStockRowEmpty: { backgroundColor: colors.errorLight },
+  featuredStockText: { fontSize: typography.size.sm, color: colors.primary, fontWeight: typography.weight.semibold },
+  featuredStockTextEmpty: { color: colors.error },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   gridItem: { width: '47%' },
 });

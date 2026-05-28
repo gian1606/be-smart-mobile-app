@@ -12,8 +12,8 @@ export default function RewardCard({ reward, onRedeem }) {
       <View style={styles.cardBody}>
         <Text style={styles.name} numberOfLines={2}>{reward.name}</Text>
         <View style={styles.costRow}>
-          <Ionicons name="leaf" size={12} color={colors.primary} />
-          <Text style={styles.cost}>{reward.tokenCost.toLocaleString()} tokens</Text>
+          <Ionicons name="diamond" size={12} color={colors.primary} />
+          <Text style={styles.cost}>{reward.tokenCost.toLocaleString()} ECO</Text>
         </View>
         <TouchableOpacity
           style={styles.redeemBtn}

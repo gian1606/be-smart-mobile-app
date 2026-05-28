@@ -65,14 +65,8 @@ export default function QRScannerScreen() {
         <ScanFrame />
         <Text style={styles.instruction}>Scan Resident QR Code</Text>
         <Text style={styles.subInstruction}>
-          Align the resident's QR code within the frame to issue eco-tokens
+          Align the resident's QR code within the frame to issue ECO
         </Text>
-        {!scanned && (
-          <TouchableOpacity style={styles.simulateBtn} onPress={handleScan} activeOpacity={0.8}>
-            <Ionicons name="qr-code-outline" size={16} color={colors.secondary} />
-            <Text style={styles.simulateBtnText}>Simulate Scan</Text>
-          </TouchableOpacity>
-        )}
       </View>
 
       {scanned && (
@@ -109,7 +103,7 @@ export default function QRScannerScreen() {
                     {type.label}
                   </Text>
                   <Text style={[styles.wasteRate, isSelected && styles.wasteRateSelected]}>
-                    {type.tokensPerKg} tkn/kg
+                    {type.tokensPerKg} ECO/kg
                   </Text>
                 </TouchableOpacity>
               );
@@ -122,9 +116,9 @@ export default function QRScannerScreen() {
             activeOpacity={0.8}
             disabled={!selectedWaste}
           >
-            <Ionicons name="leaf" size={18} color={colors.secondary} />
+            <Ionicons name="diamond" size={18} color={colors.secondary} />
             <Text style={styles.issueBtnText}>
-              Issue {tokensToAward > 0 ? `${tokensToAward} ` : ''}Tokens
+              Issue {tokensToAward > 0 ? `${tokensToAward} ` : ''}ECO
             </Text>
           </TouchableOpacity>
 
@@ -138,12 +132,12 @@ export default function QRScannerScreen() {
       <Modal visible={confirmVisible} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Issue Tokens?</Text>
-            <Text style={styles.modalSubtitle}>You are about to issue tokens to:</Text>
+            <Text style={styles.modalTitle}>Issue ECO?</Text>
+            <Text style={styles.modalSubtitle}>You are about to issue ECO to:</Text>
             <Text style={styles.modalHighlight}>{mockScannedResident.name}</Text>
             <View style={styles.modalTokenRow}>
-              <Ionicons name="leaf" size={20} color={colors.primary} />
-              <Text style={styles.modalTokenAmount}>+{tokensToAward} tokens</Text>
+              <Ionicons name="diamond" size={20} color={colors.primary} />
+              <Text style={styles.modalTokenAmount}>+{tokensToAward} ECO</Text>
             </View>
             <Text style={styles.modalMeta}>{selectedWaste?.label}</Text>
             <View style={styles.modalActions}>
@@ -163,11 +157,11 @@ export default function QRScannerScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
             <Ionicons name="checkmark-circle" size={56} color={colors.primary} />
-            <Text style={styles.modalTitle}>Tokens Issued!</Text>
+            <Text style={styles.modalTitle}>ECO Issued!</Text>
             <Text style={styles.modalSubtitle}>
               Successfully awarded{' '}
               <Text style={{ color: colors.primary, fontWeight: typography.weight.bold }}>
-                +{tokensToAward} tokens
+                +{tokensToAward} ECO
               </Text>{' '}
               to {mockScannedResident.name}.
             </Text>
@@ -188,8 +182,6 @@ const styles = StyleSheet.create({
   scanArea: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20, paddingBottom: 40 },
   instruction: { color: colors.secondary, fontSize: typography.size.base, fontWeight: typography.weight.semibold, textAlign: 'center' },
   subInstruction: { color: 'rgba(255,255,255,0.6)', fontSize: typography.size.sm, textAlign: 'center', paddingHorizontal: 40 },
-  simulateBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: colors.primary, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 10, marginTop: 8 },
-  simulateBtnText: { color: colors.secondary, fontWeight: typography.weight.semibold, fontSize: typography.size.sm },
   bottomSheet: { backgroundColor: colors.secondary, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, gap: 14 },
   residentCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.successLight, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: '#A5D6A7', gap: 12 },
   residentAvatar: { width: 44, height: 44, borderRadius: 9999, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center' },

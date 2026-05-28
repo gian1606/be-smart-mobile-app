@@ -33,12 +33,12 @@ export const mockTransactions = [
 
 export const mockMapData = {
   trucks: [
-    { id: 'truck-001', label: 'Truck #3 — En Route', status: 'en_route', posX: 0.55, posY: 0.35 },
+    { id: 'truck-001', label: 'Truck #3 — En Route', status: 'en_route', posX: 0.5, posY: 0.2 },
   ],
   bins: [
-    { id: 'bin-001', label: 'Bin · Brgy. Kumintang Ibaba', status: 'full', posX: 0.3,  posY: 0.5  },
-    { id: 'bin-002', label: 'Bin · Brgy. Alangilan',       status: 'ok',   posX: 0.65, posY: 0.6  },
-    { id: 'bin-003', label: 'Bin · Brgy. Pallocan West',   status: 'ok',   posX: 0.45, posY: 0.72 },
+    { id: 'bin-001', label: 'Bin · Brgy. Kumintang Ibaba', status: 'full', posX: 0.15, posY: 0.55 },
+    { id: 'bin-002', label: 'Bin · Brgy. Alangilan',       status: 'ok',   posX: 0.55, posY: 0.72 },
+    { id: 'bin-003', label: 'Bin · Brgy. Pallocan West',   status: 'ok',   posX: 0.78, posY: 0.42 },
   ],
 };
 
@@ -69,10 +69,10 @@ export const mockMRFTransactions = [
 ];
 
 export const mockMRFLocations = [
-  { id: 'mrf-loc-001', name: 'MRF Alangilan',  barangay: 'Brgy. Alangilan',        status: 'available', posX: 0.3,  posY: 0.45 },
-  { id: 'mrf-loc-002', name: 'MRF Kumintang',  barangay: 'Brgy. Kumintang Ibaba',  status: 'full',      posX: 0.62, posY: 0.3  },
-  { id: 'mrf-loc-003', name: 'MRF Pallocan',   barangay: 'Brgy. Pallocan West',    status: 'available', posX: 0.5,  posY: 0.68 },
-  { id: 'mrf-loc-004', name: 'MRF Cuta',       barangay: 'Brgy. Cuta',             status: 'full',      posX: 0.75, posY: 0.55 },
+  { id: 'mrf-loc-001', name: 'MRF Alangilan',  barangay: 'Brgy. Alangilan',        status: 'available', posX: 0.2,  posY: 0.28, startingBid: '₱1,200', buyoutPrice: '₱3,500' },
+  { id: 'mrf-loc-002', name: 'MRF Kumintang',  barangay: 'Brgy. Kumintang Ibaba',  status: 'full',      posX: 0.72, posY: 0.18, startingBid: '₱2,000', buyoutPrice: '₱5,800' },
+  { id: 'mrf-loc-003', name: 'MRF Pallocan',   barangay: 'Brgy. Pallocan West',    status: 'available', posX: 0.38, posY: 0.82, startingBid: '₱1,500', buyoutPrice: '₱4,200' },
+  { id: 'mrf-loc-004', name: 'MRF Cuta',       barangay: 'Brgy. Cuta',             status: 'full',      posX: 0.85, posY: 0.65, startingBid: '₱3,000', buyoutPrice: '₱7,500' },
 ];
 
 // ─── MRF Buyer ───────────────────────────────────────────────────────────────
@@ -91,11 +91,11 @@ export const mockBuyerUser = {
 };
 
 export const mockMRFReservations = [
-  { id: 'res-001', mrfName: 'MRF Alangilan',  barangay: 'Brgy. Alangilan',       material: 'Recyclables',   weight: '50 kg',  amount: '₱1,500', status: 'pending',   dateTime: 'May 14, 2025 · 10:00 AM' },
-  { id: 'res-002', mrfName: 'MRF Pallocan',   barangay: 'Brgy. Pallocan West',   material: 'Scrap Metal',   weight: '30 kg',  amount: '₱2,100', status: 'pending',   dateTime: 'May 15, 2025 · 2:00 PM'  },
-  { id: 'res-003', mrfName: 'MRF Kumintang',  barangay: 'Brgy. Kumintang Ibaba', material: 'Recyclables',   weight: '80 kg',  amount: '₱2,400', status: 'completed', dateTime: 'May 10, 2025 · 9:00 AM'  },
-  { id: 'res-004', mrfName: 'MRF Cuta',       barangay: 'Brgy. Cuta',            material: 'Scrap Metal',   weight: '60 kg',  amount: '₱4,200', status: 'completed', dateTime: 'May 8, 2025 · 11:30 AM'  },
-  { id: 'res-005', mrfName: 'MRF Alangilan',  barangay: 'Brgy. Alangilan',       material: 'Biodegradable', weight: '40 kg',  amount: '₱800',   status: 'completed', dateTime: 'May 5, 2025 · 3:00 PM'   },
+  { id: 'res-001', mrfName: 'MRF Alangilan',  barangay: 'Brgy. Alangilan',        material: 'Recyclables',   weight: '50 kg',  amount: '₱1,500', bidAmount: '₱1,500', status: 'pending',   dateTime: 'May 14, 2025 · 10:00 AM', bids: 3 },
+  { id: 'res-002', mrfName: 'MRF Pallocan',   barangay: 'Brgy. Pallocan West',    material: 'Scrap Metal',   weight: '30 kg',  amount: '₱2,100', bidAmount: '₱2,100', status: 'pending',   dateTime: 'May 15, 2025 · 2:00 PM',  bids: 1 },
+  { id: 'res-003', mrfName: 'MRF Kumintang',  barangay: 'Brgy. Kumintang Ibaba',  material: 'Recyclables',   weight: '80 kg',  amount: '₱2,400', bidAmount: '₱2,400', status: 'won',       dateTime: 'May 10, 2025 · 9:00 AM',  bids: 4 },
+  { id: 'res-004', mrfName: 'MRF Cuta',       barangay: 'Brgy. Cuta',             material: 'Scrap Metal',   weight: '60 kg',  amount: '₱4,200', bidAmount: '₱4,200', status: 'completed', dateTime: 'May 8, 2025 · 11:30 AM',  bids: 2 },
+  { id: 'res-005', mrfName: 'MRF Alangilan',  barangay: 'Brgy. Alangilan',        material: 'Biodegradable', weight: '40 kg',  amount: '₱800',   bidAmount: '₱800',   status: 'lost',      dateTime: 'May 5, 2025 · 3:00 PM',   bids: 5 },
 ];
 
 export const mockBuyerTransactions = [
@@ -118,26 +118,26 @@ export const mockCollectorUser = {
   assignedBarangay: 'Brgy. Kumintang Ibaba',
   memberSince: 'Jan 2024',
   binsCollectedToday: 7,
-  totalCollectedKg: 340,
-  truckCapacityKg: 2000,
+  totalCollectedL: 1420,
   shiftsCompleted: 42,
+  truck: { id: 'truck-col-042', label: 'Truck #42', posX: 0.5, posY: 0.18 },
 };
 
 export const mockCollectorBins = [
-  { id: 'BIN-2024-A', name: 'Bin A', street: 'Main Avenue',    barangay: 'Brgy. Kumintang Ibaba', status: 'full',      reportedBy: 'Maria S. (RES-0015)', timeReported: '7:45 AM', posX: 0.28, posY: 0.38 },
-  { id: 'BIN-2024-B', name: 'Bin B', street: 'Rizal Avenue',   barangay: 'Brgy. Kumintang Ibaba', status: 'full',      reportedBy: 'Jose L. (RES-0033)', timeReported: '8:02 AM', posX: 0.62, posY: 0.28 },
-  { id: 'BIN-2024-C', name: 'Bin C', street: 'Central Road',   barangay: 'Brgy. Kumintang Ibaba', status: 'collected', reportedBy: 'Juan D. (RES-0021)', timeReported: '8:14 AM', posX: 0.48, posY: 0.55 },
-  { id: 'BIN-2024-D', name: 'Bin D', street: 'Barangay Road',  barangay: 'Brgy. Kumintang Ibaba', status: 'full',      reportedBy: 'Ana R. (RES-0044)', timeReported: '8:30 AM', posX: 0.3,  posY: 0.7  },
-  { id: 'BIN-2024-E', name: 'Bin E', street: 'Market Street',  barangay: 'Brgy. Pallocan West',   status: 'missed',    reportedBy: 'Luis M. (RES-0009)', timeReported: '7:20 AM', posX: 0.7,  posY: 0.62 },
+  { id: 'BIN-2024-A', name: 'Bin A', street: 'Main Avenue',    barangay: 'Brgy. Kumintang Ibaba', status: 'full',      reportedBy: 'Maria S. (RES-0015)', timeReported: '7:45 AM', posX: 0.12, posY: 0.42 },
+  { id: 'BIN-2024-B', name: 'Bin B', street: 'Rizal Avenue',   barangay: 'Brgy. Kumintang Ibaba', status: 'full',      reportedBy: 'Jose L. (RES-0033)', timeReported: '8:02 AM', posX: 0.82, posY: 0.32 },
+  { id: 'BIN-2024-C', name: 'Bin C', street: 'Central Road',   barangay: 'Brgy. Kumintang Ibaba', status: 'collected', reportedBy: 'Juan D. (RES-0021)', timeReported: '8:14 AM', posX: 0.35, posY: 0.72 },
+  { id: 'BIN-2024-D', name: 'Bin D', street: 'Barangay Road',  barangay: 'Brgy. Kumintang Ibaba', status: 'full',      reportedBy: 'Ana R. (RES-0044)', timeReported: '8:30 AM', posX: 0.65, posY: 0.78 },
+  { id: 'BIN-2024-E', name: 'Bin E', street: 'Market Street',  barangay: 'Brgy. Pallocan West',   status: 'missed',    reportedBy: 'Luis M. (RES-0009)', timeReported: '7:20 AM', posX: 0.2,  posY: 0.82 },
 ];
 
 export const mockCollectorTransactions = [
-  { id: 'col-txn-001', binId: 'BIN-2024-C', binName: 'Bin C', street: 'Central Road',   barangay: 'Brgy. Kumintang Ibaba', collectedAt: 'May 13, 2025 · 9:41 AM',  weightKg: null,  status: 'collected' },
-  { id: 'col-txn-002', binId: 'BIN-2024-F', binName: 'Bin F', street: 'Pallocan Ave',   barangay: 'Brgy. Pallocan West',   collectedAt: 'May 12, 2025 · 3:15 PM',  weightKg: 85.5,  status: 'reported'  },
-  { id: 'col-txn-003', binId: 'BIN-2024-G', binName: 'Bin G', street: 'Alangilan Rd',   barangay: 'Brgy. Alangilan',       collectedAt: 'May 12, 2025 · 1:00 PM',  weightKg: 120.0, status: 'reported'  },
-  { id: 'col-txn-004', binId: 'BIN-2024-H', binName: 'Bin H', street: 'Rizal Avenue',   barangay: 'Brgy. Kumintang Ibaba', collectedAt: 'May 11, 2025 · 10:30 AM', weightKg: 95.0,  status: 'reported'  },
-  { id: 'col-txn-005', binId: 'BIN-2024-I', binName: 'Bin I', street: 'Cuta Road',      barangay: 'Brgy. Cuta',            collectedAt: 'May 11, 2025 · 8:45 AM',  weightKg: 60.0,  status: 'reported'  },
-  { id: 'col-txn-006', binId: 'BIN-2024-J', binName: 'Bin J', street: 'Market Street',  barangay: 'Brgy. Pallocan West',   collectedAt: 'May 10, 2025 · 2:00 PM',  weightKg: 110.5, status: 'reported'  },
+  { id: 'col-txn-001', binId: 'BIN-2024-C', binName: 'Bin C', street: 'Central Road',   barangay: 'Brgy. Kumintang Ibaba', collectedAt: 'May 13, 2025 · 9:41 AM',  volumeL: null,   status: 'collected' },
+  { id: 'col-txn-002', binId: 'BIN-2024-F', binName: 'Bin F', street: 'Pallocan Ave',   barangay: 'Brgy. Pallocan West',   collectedAt: 'May 12, 2025 · 3:15 PM',  volumeL: 240.0,  status: 'reported'  },
+  { id: 'col-txn-003', binId: 'BIN-2024-G', binName: 'Bin G', street: 'Alangilan Rd',   barangay: 'Brgy. Alangilan',       collectedAt: 'May 12, 2025 · 1:00 PM',  volumeL: 320.0,  status: 'reported'  },
+  { id: 'col-txn-004', binId: 'BIN-2024-H', binName: 'Bin H', street: 'Rizal Avenue',   barangay: 'Brgy. Kumintang Ibaba', collectedAt: 'May 11, 2025 · 10:30 AM', volumeL: 180.0,  status: 'reported'  },
+  { id: 'col-txn-005', binId: 'BIN-2024-I', binName: 'Bin I', street: 'Cuta Road',      barangay: 'Brgy. Cuta',            collectedAt: 'May 11, 2025 · 8:45 AM',  volumeL: 150.0,  status: 'reported'  },
+  { id: 'col-txn-006', binId: 'BIN-2024-J', binName: 'Bin J', street: 'Market Street',  barangay: 'Brgy. Pallocan West',   collectedAt: 'May 10, 2025 · 2:00 PM',  volumeL: 280.0,  status: 'reported'  },
 ];
 
 export const mockCollectorNotifications = [
@@ -149,18 +149,18 @@ export const mockCollectorNotifications = [
 
 // ─── Shared ──────────────────────────────────────────────────────────────────
 export const mockRewards = [
-  { id: 'rwd-001', name: 'Mercury Drug ₱100 Voucher',    tokenCost: 400, category: 'Services',  partner: 'Mercury Drug',       placeholderColor: '#E3F2FD', featured: true  },
-  { id: 'rwd-002', name: 'Jollibee ₱50 GC',             tokenCost: 200, category: 'Food',       partner: 'Jollibee',           placeholderColor: '#FFF9C4', featured: false },
-  { id: 'rwd-003', name: 'SM Malls ₱100 GC',            tokenCost: 350, category: 'Shopping',   partner: 'SM Malls',           placeholderColor: '#F3E5F5', featured: false },
-  { id: 'rwd-004', name: 'Meralco Bill Discount',        tokenCost: 500, category: 'Utilities',  partner: 'Meralco',            placeholderColor: '#FFF3E0', featured: false },
-  { id: 'rwd-005', name: 'Chowking ₱50 GC',             tokenCost: 180, category: 'Food',       partner: 'Chowking',           placeholderColor: '#FFEBEE', featured: false },
-  { id: 'rwd-006', name: 'National Bookstore ₱75 GC',   tokenCost: 250, category: 'Shopping',   partner: 'National Bookstore', placeholderColor: '#E8F5E9', featured: false },
+  { id: 'rwd-001', name: 'Mercury Drug ₱100 Voucher',    tokenCost: 400, category: 'Services',  partner: 'Mercury Drug',       placeholderColor: '#E3F2FD', featured: true,  stock: 5  },
+  { id: 'rwd-002', name: 'Jollibee ₱50 GC',             tokenCost: 200, category: 'Food',       partner: 'Jollibee',           placeholderColor: '#FFF9C4', featured: false, stock: 12 },
+  { id: 'rwd-003', name: 'SM Malls ₱100 GC',            tokenCost: 350, category: 'Shopping',   partner: 'SM Malls',           placeholderColor: '#F3E5F5', featured: false, stock: 8  },
+  { id: 'rwd-004', name: 'Meralco Bill Discount',        tokenCost: 500, category: 'Utilities',  partner: 'Meralco',            placeholderColor: '#FFF3E0', featured: false, stock: 3  },
+  { id: 'rwd-005', name: 'Chowking ₱50 GC',             tokenCost: 180, category: 'Food',       partner: 'Chowking',           placeholderColor: '#FFEBEE', featured: false, stock: 20 },
+  { id: 'rwd-006', name: 'National Bookstore ₱75 GC',   tokenCost: 250, category: 'Shopping',   partner: 'National Bookstore', placeholderColor: '#E8F5E9', featured: false, stock: 0  },
 ];
 
 export const mockPartnerAds = [
-  { id: 'ad-001', partner: 'SM Malls',     tagline: '10% off at SM Batangas',  placeholderColor: '#E8EAF6' },
-  { id: 'ad-002', partner: 'Jollibee',     tagline: 'Free drink with every meal', placeholderColor: '#FFF9C4' },
-  { id: 'ad-003', partner: 'Mercury Drug', tagline: '5% off on vitamins',      placeholderColor: '#E3F2FD' },
+  { id: 'ad-001', partner: 'SM Malls',     tagline: '10% off at SM Batangas',     image: require('../assets/ads/sm-malls.png')     },
+  { id: 'ad-002', partner: 'Jollibee',     tagline: 'Free drink with every meal', image: require('../assets/ads/jollibee.jpg')     },
+  { id: 'ad-003', partner: 'Mercury Drug', tagline: '5% off on vitamins',         image: require('../assets/ads/mercury-drug.jpg') },
 ];
 
 export const batangasBarangays = [
@@ -172,4 +172,31 @@ export const batangasBarangays = [
   'Brgy. Pallocan West',
   'Brgy. Pallocan East',
   'Brgy. Sta. Rita Karsada',
+];
+
+// ─── Resident Notifications ──────────────────────────────────────────────────
+export const mockResidentNotifications = [
+  { id: 'rn-001', type: 'reward',   title: 'ECO Earned!',           body: 'You earned +50 ECO for reporting a full bin on Rizal Ave.',         time: '8:15 AM',   read: false },
+  { id: 'rn-002', type: 'pickup',   title: 'Bin Collected',         body: 'The bin you reported on Main Avenue has been collected.',            time: '9:30 AM',   read: false },
+  { id: 'rn-003', type: 'reward',   title: 'Reward Redeemed',       body: 'Your Jollibee ₱50 GC has been issued. Present QR at the counter.',  time: 'Yesterday', read: true  },
+  { id: 'rn-004', type: 'promo',    title: 'New Partner Offer',     body: 'SM Malls is offering 10% off. Redeem with your ECO tokens today.',   time: 'Yesterday', read: true  },
+  { id: 'rn-005', type: 'system',   title: 'Account Verified',      body: 'Your BE-SMART account has been successfully verified.',              time: 'May 10',    read: true  },
+];
+
+// ─── MRF Worker Notifications ────────────────────────────────────────────────
+export const mockMRFNotifications = [
+  { id: 'mn-001', type: 'scan',     title: 'High Scan Volume',      body: '12 residents scanned today. Daily target of 15 is within reach.',   time: '10:02 AM',  read: false },
+  { id: 'mn-002', type: 'alert',    title: 'MRF Kumintang Full',    body: 'MRF Kumintang has reached capacity. Notify the buyer team.',         time: '9:45 AM',   read: false },
+  { id: 'mn-003', type: 'reward',   title: 'Tokens Issued',         body: 'You issued 82 ECO to Luz Mendoza for 4.1 kg of recyclables.',        time: '9:45 AM',   read: true  },
+  { id: 'mn-004', type: 'alert',    title: 'MRF Cuta Full',         body: 'MRF Cuta has reached capacity. A buyer reservation is pending.',     time: 'Yesterday', read: true  },
+  { id: 'mn-005', type: 'system',   title: 'Shift Started',         body: 'Your shift at MRF Alangilan has been logged for today.',             time: 'Yesterday', read: true  },
+];
+
+// ─── MRF Buyer Notifications ─────────────────────────────────────────────────
+export const mockBuyerNotifications = [
+  { id: 'bn-001', type: 'mrf',      title: 'MRF Kumintang Full',    body: 'MRF Kumintang is now full and ready for pickup. Reserve now.',       time: '9:45 AM',   read: false },
+  { id: 'bn-002', type: 'mrf',      title: 'MRF Cuta Full',         body: 'MRF Cuta has reached capacity. Tap to make a reservation.',          time: '8:30 AM',   read: false },
+  { id: 'bn-003', type: 'reserve',  title: 'Reservation Confirmed', body: 'Your reservation at MRF Alangilan on May 14 is confirmed.',          time: 'Yesterday', read: true  },
+  { id: 'bn-004', type: 'complete', title: 'Transaction Complete',  body: 'Your pickup at MRF Kumintang has been recorded. ₱2,400 total.',      time: 'Yesterday', read: true  },
+  { id: 'bn-005', type: 'system',   title: 'New MRF Available',     body: 'MRF Pallocan is now accepting reservations for recyclables.',         time: 'May 10',    read: true  },
 ];
