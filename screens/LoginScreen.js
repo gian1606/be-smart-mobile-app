@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  View, Text, TextInput, TouchableOpacity,
+  View, Text, TextInput, TouchableOpacity, Image,
   StyleSheet, ScrollView, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -49,7 +49,11 @@ export default function LoginScreen({ navigation, setIsAuthenticated }) {
       >
         {/* Logo */}
         <View style={styles.logoWrapper}>
-          <Ionicons name="leaf" size={48} color={colors.primary} />
+          <Image
+            source={require('../assets/Batangas_logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.wordmark}>BE-SMART</Text>
         </View>
 
@@ -133,6 +137,7 @@ const styles = StyleSheet.create({
     gap: 28,
   },
   logoWrapper: { alignItems: 'center', gap: 8 },
+  logo: { width: 80, height: 80 },
   wordmark: { fontSize: typography.size.xl, fontWeight: typography.weight.bold, color: colors.primary, letterSpacing: 2 },
   card: { width: '100%', backgroundColor: colors.secondary, borderRadius: 18, padding: 24, gap: 14, borderWidth: 1, borderColor: colors.cardBorder, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.07, shadowRadius: 16, elevation: 4 },
   cardTitle: { fontSize: typography.size.xl, fontWeight: typography.weight.bold, color: colors.textPrimary },

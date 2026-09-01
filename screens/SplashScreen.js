@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
 import { typography } from '../theme/typography';
 
@@ -15,7 +14,11 @@ export default function SplashScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
-        <Ionicons name="leaf" size={64} color={colors.secondary} />
+        <Image
+          source={require('../assets/Batangas_logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <Text style={styles.wordmark}>BE-SMART</Text>
       </View>
       <Text style={styles.tagline}>Your city. Your rewards. Your future.</Text>
@@ -34,6 +37,10 @@ const styles = StyleSheet.create({
   logoWrapper: {
     alignItems: 'center',
     gap: 12,
+  },
+  logo: {
+    width: 120,
+    height: 120,
   },
   wordmark: {
     fontSize: typography.size.xxl,
